@@ -1,10 +1,10 @@
 const { loginUser } = require("../methods/authMethod");
-const {
-  removeAccessToken,
-  removeRefreshToken,
-  isRefreshTokenActive,
-  addAccessToken,
-} = require("../services/sessionService");
+// const {
+//   removeAccessToken,
+//   removeRefreshToken,
+//   isRefreshTokenActive,
+//   addAccessToken,
+// } = require("../services/sessionService");
 const {
   verifyRefreshToken,
   generateAccessToken,
@@ -20,13 +20,13 @@ const login = async (req, res) => {
 };
 
 const logout = (req, res) => {
-  const accessToken = req.token;
-  const { refreshToken } = req.body;
+  // const accessToken = req.token;
+  // const { refreshToken } = req.body;
 
-  removeAccessToken(accessToken);
-  if (refreshToken) {
-    removeRefreshToken(refreshToken);
-  }
+  // removeAccessToken(accessToken);
+  // if (refreshToken) {
+  //   removeRefreshToken(refreshToken);
+  // }
 
   res.json({ message: "Logged out successfully" });
 };
@@ -35,7 +35,7 @@ const refresh = (req, res) => {
   const { refreshToken } = req.body;
 
   if (!refreshToken || !isRefreshTokenActive(refreshToken)) {
-    return res.status(403).json({ message: "Invalid refresh token" });
+    return res.status(401).json({ message: "Refresh token required" });
   }
 
   try {
@@ -43,9 +43,11 @@ const refresh = (req, res) => {
     const newAccessToken = generateAccessToken({
       id: decoded.id,
       username: decoded.username,
+      useremail: decoded.useremail,
+      role: decoded.role,
     });
 
-    addAccessToken(newAccessToken);
+    // addAccessToken(newAccessToken);
 
     res.json({ accessToken: newAccessToken });
   } catch (err) {

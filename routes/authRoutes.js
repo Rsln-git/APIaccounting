@@ -24,7 +24,7 @@ const { authenticateToken } = require("../middleware/authMiddleware");
  *             type: object
  *             required: [username, password]
  *             properties:
- *               username:
+ *               useremail:
  *                 type: string
  *               password:
  *                 type: string
