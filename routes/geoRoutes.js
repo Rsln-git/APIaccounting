@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { authenticateToken } = require("../middleware/authMiddleware");
+const { authenticateApiKey } = require("../middleware/authMiddleware");
 const { setGeo, deleteGeo } = require("../controllers/geoController");
 
 /**
@@ -16,8 +16,12 @@ const { setGeo, deleteGeo } = require("../controllers/geoController");
  *   post:
  *     summary: Зберегти геолокацію
  *     tags: [Geolocation]
- *     security:
- *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -35,8 +39,7 @@ const { setGeo, deleteGeo } = require("../controllers/geoController");
  *       200:
  *         description: Геолокація збережена
  */
-
-router.post("/geolocation", authenticateToken, setGeo);
+router.post("/geolocation", authenticateApiKey, setGeo);
 
 /**
  * @swagger
@@ -44,12 +47,16 @@ router.post("/geolocation", authenticateToken, setGeo);
  *   delete:
  *     summary: Очистити геолокацію
  *     tags: [Geolocation]
- *     security:
- *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Геолокацію очищено
  */
-router.delete("/cleargeo", authenticateToken, deleteGeo);
+router.delete("/cleargeo", authenticateApiKey, deleteGeo);
 
 module.exports = router;

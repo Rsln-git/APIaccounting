@@ -1,11 +1,6 @@
 const { setGeolocation, deleteGeolocation } = require("../methods/geoMethod");
 
-/**
- * Збереження геолокації
- */
-
 const setGeo = async (req, res) => {
-  console.log("geocontroller");
   try {
     const result = await setGeolocation(req);
     res.status(200).json(result);

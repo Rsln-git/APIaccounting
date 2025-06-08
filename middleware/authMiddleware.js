@@ -1,22 +1,11 @@
-const jwt = require("jsonwebtoken");
-// const { isAccessTokenActive } = require("../services/sessionService");
-const SECRET_KEY = "your-secret-key";
+const API_KEY = "your-secure-api-key";
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-
-  // if (!token || !isAccessTokenActive(token)) {
-  //   return res.sendStatus(403);
-  // }
-  if (!token) return res.sendStatus(401);
-
-  jwt.verify(token, SECRET_KEY, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    req.token = token;
-    next();
-  });
+const authenticateApiKey = (req, res, next) => {
+  const apiKey = req.headers["x-api-key"];
+  if (!apiKey || apiKey !== API_KEY) {
+    return res.status(403).json({ message: "Forbidden. Invalid API Key." });
+  }
+  next();
 };
 
-module.exports = { authenticateToken };
+module.exports = { authenticateApiKey };
